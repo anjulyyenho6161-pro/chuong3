@@ -8,5 +8,3 @@ def tinhgiaithua(n):
         gt *= i
     return gt
 
-# Ví dụ sử dụng:
-print("5! =", tinhgiaithua(5))
