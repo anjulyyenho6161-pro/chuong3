@@ -1,91 +1,131 @@
-# Các hàm chức năng Quản lý Sinh viên
-danhsach = []
+dssv=[]
 
-def tinhdtb_hocluc(toan, ly, hoa):
-    """Hàm tính điểm trung bình và xếp loại học lực"""
-    dtb = (toan + ly + hoa) / 3
-    if dtb >= 8.0:
-        hoc_luc = "Giỏi"
-    elif dtb >= 6.5:
-        hoc_luc = "Khá"
-    elif dtb >= 5.0:
-        hoc_luc = "Trung Bình"
+def nhapds():
+        for i in range(sosv):
+            print(f"Nhập sinh viên thứ {i+1} :")
+            masv = input("Nhập mã sinh viên: ")
+            ten = input("Nhập tên: ")
+            toan = float(input("Nhập điểm toán: "))
+            ly = float(input("Nhập điểm lý: "))
+            hoa = float(input("Nhập điểm hóa: "))
+            diemtb = (toan+ly+hoa) / 3
+            if diemtb >= 8:
+                hocluc = "Giỏi"
+            elif diemtb >= 6.5:
+                hocluc = "Khá"
+            elif diemtb >= 5:
+                hocluc = "Trung bình"
+            else:
+                hocluc = "Yếu"
+            sv = {"Masv": masv, "Tên": ten, "dtoan": toan,
+                  "dly": ly, "dhoa": hoa, "dtb": diemtb,
+                  "Hl": hocluc}
+            dssv.append(sv)
+def inds():
+        for sv in dssv:
+            print(sv["Masv"],"--",
+            sv["Tên"],"--",
+            sv["dtoan"],"--",sv["dly"],"--",
+            sv["dhoa"],"--",sv["dtb"],
+            "--",sv["Hl"])
+def themsv():
+    print("Nhập thông tin sinh viên cần thêm: ")
+    masv = input("Nhập mã sinh viên: ")
+    ten = input("Nhập tên: ")
+    toan = float(input("Nhập điểm toán: "))
+    ly = float(input("Nhập điểm lý: "))
+    hoa = float(input("Nhập điểm hóa: "))
+    diemtb = (toan + ly + hoa) / 3
+    if diemtb >= 8:
+        hocluc = "Giỏi"
+    elif diemtb >= 6.5:
+        hocluc = "Khá"
+    elif diemtb >= 5:
+        hocluc = "Trung bình"
     else:
-        hoc_luc = "Yếu"
-    return round(dtb, 2), hoc_luc
-
-def themsv(danhsach, ma_sv, ten, gioi_tinh, tuoi, toan, ly, hoa):
-    """Hàm thêm sẵn dữ liệu mẫu để in kết quả"""
-    dtb, hoc_luc = tinhdtb_hocluc(toan, ly, hoa)
-    sv = {
-        "ma_sv": ma_sv,
-        "ten": ten,
-        "gioi_tinh": gioi_tinh,
-        "tuoi": tuoi,
-        "toan": toan,
-        "ly": ly,
-        "hoa": hoa,
-        "dtb": dtb,
-        "hoc_luc": hoc_luc
-    }
-    danhsach.append(sv)
-
-def xoasv_theoma(danhsach, ma):
-    """Xóa sinh viên theo Mã SV"""
-    for sv in danhsach:
-        if sv["ma_sv"] == ma:
-            danhsach.remove(sv)
-            print(f"Đã xóa sinh viên có mã: {ma}")
+        hocluc = "Yếu"
+    sv = {"Masv": masv, "Tên": ten, "dtoan": toan,
+          "dly": ly, "dhoa": hoa, "dtb": diemtb,
+          "Hl": hocluc}
+    dssv.append(sv)
+def capnhat(masv):
+    for sv in dssv:
+        if sv["Masv"] == masv:
+            sv["Tên"] = input("Nhập tên mới: ")
+            sv["dtoan"] = float(input("Nhập điểm toán mới: "))
+            sv["dly"] = float(input("Nhập điểm lý mới: "))
+            sv["dhoa"] = float(input("Nhập điểm hóa mới: "))
+            diemtb = (sv["dtoan"] + sv["dly"] + sv["dhoa"]) / 3
+            sv["dtb"] = diemtb
+            if diemtb >= 8:
+                sv["Hl"] = "Giỏi"
+            elif diemtb >= 6.5:
+                sv["Hl"] = "Khá"
+            elif diemtb >= 5:
+                sv["Hl"] = "Trung bình"
+            else:
+                sv["Hl"] = "Yếu"
             return
-    print("Không tìm thấy sinh viên có mã này.")
+    print("Không tìm thấy mã sinh viên!")
 
-def timtheoten(danhsach, tukhoa):
-    """Tìm kiếm sinh viên theo từ khóa tên"""
-    ketqua = [sv for sv in danhsach if tukhoa.lower() in sv["ten"].lower()]
-    if ketqua:
-        print(f"\nTìm thấy {len(ketqua)} sinh viên phù hợp:")
-        hienthids(ketqua)
-    else:
-        print("Không tìm thấy sinh viên nào phù hợp.")
+def xoasv(masvxoa):
+    for sv in dssv:
+        if sv["Masv"] == masvxoa:
+            dssv.remove(sv)
+            return
+    print("Không tìm thấy mã sinh viên!")
+def timkiem(tencantim):
+    for sv in dssv:
+        if sv["Tên"] == tencantim:
+            return "có sinh viên cần tìm "
+        return"ko tìm thấy sinh viên"
+def demsv(tencantim):
+    dem = 0
+    for sv in dssv:
+        if sv["Tên"]==tencantim:
+            dem += 1
+    return  dem
+def sxdtb():
+    return sorted(dssv,key=lambda x:x["dtb"])
 
-def sxdtb(danhsach):
-    """Sắp xếp sinh viên theo điểm trung bình (giảm dần)"""
-    danhsach.sort(key=lambda x: x["dtb"], reverse=True)
-    print("Đã sắp xếp danh sách theo điểm trung bình giảm dần.")
+def sxten():
+    return sorted(key=lambda sv: sv["Tên"])
+   
+def sxmasv():
+    sorted(key=lambda sv: sv["Masv"])
+   
+sosv = int(input("Nhập số lượng sinh viên: "))
+nhapds()
+print("Danh sách sinh viên ban đầu:")
+inds()
 
-def hienthids(danhsach):
-    """Hiển thị danh sách sinh viên"""
-    if not danhsach:
-        print("Danh sách sinh viên hiện đang trống!")
-        return
-    print("-" * 105)
-    print(f"{'Mã SV':<10} | {'Họ Tên':<20} | {'Giới tính':<10} | {'Tuổi':<5} | {'Toán':<6} | {'Lý':<6} | {'Hóa':<6} | {'ĐTB':<6} | {'Học lực':<10}")
-    print("-" * 105)
-    for sv in danhsach:
-        print(f"{sv['ma_sv']:<10} | {sv['ten']:<20} | {sv['gioi_tinh']:<10} | {sv['tuoi']:<5} | {sv['toan']:<6.1f} | {sv['ly']:<6.1f} | {sv['hoa']:<6.1f} | {sv['dtb']:<6.2f} | {sv['hoc_luc']:<10}")
-    print("-" * 105)
+themsv()
+print("Danh sách sau khi thêm:")
+inds()
 
-ds_sinh_vien = []
+masv = input("Nhập mã sinh viên cần cập nhật: ")
+capnhat(masv)
+print("Danh sách sau khi cập nhật:")
+inds()
 
-# 1. Thêm dữ liệu mẫu
-themsv(ds_sinh_vien, "SV001", "Nguyen Van An", "Nam", 20, 8.0, 7.5, 8.5)
-themsv(ds_sinh_vien, "SV002", "Tran Thi Binh", "Nu", 19, 6.0, 5.5, 6.5)
-themsv(ds_sinh_vien, "SV003", "Le Van Cuong", "Nam", 21, 9.0, 9.5, 9.0)
+masvxoa = input("Nhập mã sinh viên cần xóa: ")
+xoasv(masv)
+print("Danh sách sau khi xóa:")
+inds()
 
-# 2. In danh sách ban đầu
-print("=== DANH SÁCH SINH VIÊN BAN ĐẦU ===")
-hienthids(ds_sinh_vien)
+tencantim = input("Nhập tên sinh viên cần tìm: ")
+timkiem(tencantim)
+print("đếm số sinh viên" ,tencantim ,"là",demsv(tencantim))
+inds()
 
-# 3. Sắp xếp theo điểm trung bình và in kết quả
-print("\n=== SAU KHI SẮP XẾP THEO ĐTB ===")
-sxdtb(ds_sinh_vien)
-hienthids(ds_sinh_vien)
+print("Sắp xếp theo điểm trung bình:")
+dssv=sxdtb()
+inds()
 
-# 4. Tìm kiếm theo tên
-print("\n=== KẾT QUẢ TÌM KIẾM 'An' ===")
-timtheoten(ds_sinh_vien, "An")
+print("Sắp xếp theo tên:")
+dssv=sxten()
+inds()
 
-# 5. Xóa sinh viên và in lại danh sách
-print("\n=== SAU KHI XÓA 'SV002' ===")
-xoasv_theoma(ds_sinh_vien, "SV002")
-hienthids(ds_sinh_vien)
+print("Sắp xếp theo mã sinh viên:")
+dssv=sxmasv()
+inds()
