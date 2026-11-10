@@ -17,6 +17,3 @@ def kiem_tra_so(n):
     print(f"- Có phải số hoàn hảo không? {la_hoan_hao}")
 
 
-# Ví dụ sử dụng:
-kiem_tra_so(28)  # 28 là số hoàn hảo
-kiem_tra_so(16)  # 16 là số chính phương
